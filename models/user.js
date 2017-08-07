@@ -1,12 +1,12 @@
 'use strict'
 
-const mongoose = require('mongoose')
-const Schema = mongoose.Schema
+const mongoose = require('mongoose');
+const Schema  = mongoose.Schema;
 const bcrypt = require('bcrypt-nodejs')
 const crypto = require('crypto')
 
 const UserSchema = new Schema({
-    email: { type: String, unique: true, lowercase: true},
+    email: { type: String, unique: true, lowercase: true },
     displayname: String,
     avatar: String,
     password: { type: String, select: false},
@@ -14,9 +14,12 @@ const UserSchema = new Schema({
     lastLogin: Date
 })
 
-UserSchema.pre('save', (next) => {
-    let user = this
-    if (!user.isModified('password')) return next()
+UserSchema.pre('save', function(next) {
+    var user = this
+    console.log(this)
+    if (!user.isModified('password')) {
+        return next()
+    }
 
     bcrypt.genSalt(10, (err, salt) => {
         if (err) return next(err)
